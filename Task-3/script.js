@@ -3,13 +3,28 @@ const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const STORAGE_KEY = "thiranex-task3-tasks";
+
+let tasks = [];
 let currentFilter = "all";
 
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+// Load tasks from localStorage
+function loadTasks() {
+    try {
+        const savedTasks = localStorage.getItem(STORAGE_KEY);
+        tasks = savedTasks ? JSON.parse(savedTasks) : [];
+    } catch (error) {
+        console.error("Error loading tasks:", error);
+        tasks = [];
+    }
 }
 
+// Save tasks to localStorage
+function saveTasks() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+// Render tasks on the page
 function renderTasks() {
     taskList.innerHTML = "";
 
@@ -30,30 +45,54 @@ function renderTasks() {
         li.className = "task-item";
         li.dataset.id = task.id;
 
-        li.innerHTML = `
-            <div class="task-content">
-                <input
-                    type="checkbox"
-                    class="complete-checkbox"
-                    ${task.completed ? "checked" : ""}
-                    aria-label="Mark task as completed"
-                >
+        const taskContent = document.createElement("div");
+        taskContent.className = "task-content";
 
-                <span class="task-text ${task.completed ? "completed" : ""}">
-                    ${task.text}
-                </span>
-            </div>
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "complete-checkbox";
+        checkbox.checked = task.completed;
+        checkbox.setAttribute(
+            "aria-label",
+            "Mark task as completed"
+        );
 
-            <div class="task-actions">
-                <button type="button" class="edit-btn">Edit</button>
-                <button type="button" class="delete-btn">Delete</button>
-            </div>
-        `;
+        const taskText = document.createElement("span");
+        taskText.className = "task-text";
+
+        if (task.completed) {
+            taskText.classList.add("completed");
+        }
+
+        taskText.textContent = task.text;
+
+        taskContent.appendChild(checkbox);
+        taskContent.appendChild(taskText);
+
+        const taskActions = document.createElement("div");
+        taskActions.className = "task-actions";
+
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "edit-btn";
+        editButton.textContent = "Edit";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "Delete";
+
+        taskActions.appendChild(editButton);
+        taskActions.appendChild(deleteButton);
+
+        li.appendChild(taskContent);
+        li.appendChild(taskActions);
 
         taskList.appendChild(li);
     });
 }
 
+// Add a new task
 todoForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -70,6 +109,7 @@ todoForm.addEventListener("submit", function(event) {
     };
 
     tasks.push(newTask);
+
     saveTasks();
     renderTasks();
 
@@ -77,6 +117,7 @@ todoForm.addEventListener("submit", function(event) {
     taskInput.focus();
 });
 
+// Edit and delete using event delegation
 taskList.addEventListener("click", function(event) {
     const taskItem = event.target.closest(".task-item");
 
@@ -87,31 +128,49 @@ taskList.addEventListener("click", function(event) {
     const taskId = Number(taskItem.dataset.id);
     const task = tasks.find(task => task.id === taskId);
 
+    if (!task) {
+        return;
+    }
+
+    // Delete task
     if (event.target.classList.contains("delete-btn")) {
         tasks = tasks.filter(task => task.id !== taskId);
+
         saveTasks();
         renderTasks();
     }
 
+    // Edit task
     if (event.target.classList.contains("edit-btn")) {
         const newText = prompt("Edit your task:", task.text);
 
         if (newText !== null && newText.trim() !== "") {
             task.text = newText.trim();
+
             saveTasks();
             renderTasks();
         }
     }
 });
 
+// Mark task as completed
 taskList.addEventListener("change", function(event) {
     if (!event.target.classList.contains("complete-checkbox")) {
         return;
     }
 
     const taskItem = event.target.closest(".task-item");
+
+    if (!taskItem) {
+        return;
+    }
+
     const taskId = Number(taskItem.dataset.id);
     const task = tasks.find(task => task.id === taskId);
+
+    if (!task) {
+        return;
+    }
 
     task.completed = event.target.checked;
 
@@ -119,6 +178,7 @@ taskList.addEventListener("change", function(event) {
     renderTasks();
 });
 
+// Filter tasks
 filterButtons.forEach(button => {
     button.addEventListener("click", function() {
         currentFilter = button.dataset.filter;
@@ -133,4 +193,6 @@ filterButtons.forEach(button => {
     });
 });
 
+// Initialize application
+loadTasks();
 renderTasks();
