@@ -1,138 +1,72 @@
-:root {
-    --bg-color: #f5f7fa;
-    --text-color: #222;
-    --card-color: #ffffff;
-    --header-color: #1f2937;
-    --accent-color: #2563eb;
-}
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
     line-height: 1.6;
-    background: var(--bg-color);
-    color: var(--text-color);
 }
-
-/* Header and Flexbox Navigation */
 
 header {
-    background: var(--header-color);
-    padding: 20px;
-}
-
-nav {
-    max-width: 1100px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-}
-
-nav h1 {
+    text-align: center;
+    background: #1f2937;
     color: white;
+    padding: 30px 20px;
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
+header h1 {
+    margin-bottom: 8px;
 }
-
-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover,
-nav a:focus {
-    color: #93c5fd;
-    text-decoration: underline;
-}
-
-/* Main Layout */
 
 main {
-    max-width: 1100px;
+    max-width: 700px;
     margin: 40px auto;
     padding: 20px;
 }
 
-/* CSS Grid */
-
-section {
-    background: var(--card-color);
-    padding: 40px;
+.todo-container {
+    background: white;
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
-article {
-    display: grid;
-    gap: 10px;
-    padding: 20px;
-    margin-top: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-/* Typography */
 
 h2 {
     margin-bottom: 20px;
-    color: var(--accent-color);
+    color: #2563eb;
 }
 
-h3 {
-    margin-top: 20px;
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
 }
 
-p {
-    margin-bottom: 15px;
+.input-group {
+    display: flex;
+    gap: 10px;
 }
 
-/* Contact Form */
-
-form {
-    display: grid;
-    gap: 15px;
-    max-width: 600px;
-}
-
-input,
-textarea {
-    width: 100%;
+input {
+    flex: 1;
     padding: 12px;
     border: 1px solid #aaa;
     border-radius: 6px;
     font-size: 16px;
 }
 
-input:focus,
-textarea:focus {
-    outline: 3px solid #93c5fd;
-    border-color: var(--accent-color);
-}
-
 button {
-    padding: 12px 20px;
+    padding: 10px 16px;
     border: none;
     border-radius: 6px;
-    background: var(--accent-color);
+    background: #2563eb;
     color: white;
-    font-size: 16px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 button:hover,
@@ -140,55 +74,85 @@ button:focus {
     opacity: 0.9;
 }
 
-/* Footer */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.filter-btn.active {
+    background: #1f2937;
+}
+
+#task-list {
+    list-style: none;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: #f59e0b;
+}
+
+.delete-btn {
+    background: #dc2626;
+}
 
 footer {
     text-align: center;
     padding: 20px;
-    background: var(--header-color);
+    background: #1f2937;
     color: white;
     margin-top: 40px;
 }
 
-/* Tablet */
-
-@media (min-width: 601px) {
-    article {
-        grid-template-columns: 1fr 2fr;
-        align-items: center;
-    }
-}
-
-/* Mobile */
-
 @media (max-width: 600px) {
-    nav {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-
     main {
         margin: 20px auto;
         padding: 15px;
     }
 
-    section {
-        padding: 25px;
+    .todo-container {
+        padding: 20px;
     }
-}
-body.dark-mode {
-    --bg-color: #111827;
-    --text-color: #f9fafb;
-    --card-color: #1f2937;
-    --header-color: #030712;
-    --accent-color: #60a5fa;
-}
 
-body.dark-mode section {
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    .input-group {
+        flex-direction: column;
+    }
+
+    .task-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .task-actions {
+        justify-content: flex-end;
+    }
 }
