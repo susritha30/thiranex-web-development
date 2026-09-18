@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple and interactive To-Do List application.">
+    <title>To-Do List | Thiranex Task 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+    <header>
+        <h1>My To-Do List</h1>
+        <p>Manage your daily tasks easily</p>
+    </header>
+
+    <main>
+
+        <section class="todo-container" aria-labelledby="todo-heading">
+
+            <h2 id="todo-heading">Tasks</h2>
+
+            <form id="todo-form">
+                <label for="task-input">Enter a task</label>
+
+                <div class="input-group">
+                    <input
+                        type="text"
+                        id="task-input"
+                        placeholder="Enter your task..."
+                        required
+                    >
+
+                    <button type="submit">Add Task</button>
+                </div>
+            </form>
+
+            <div class="filters" aria-label="Task filters">
+                <button type="button" class="filter-btn active" data-filter="all">
+                    All
+                </button>
+
+                <button type="button" class="filter-btn" data-filter="active">
+                    Active
+                </button>
+
+                <button type="button" class="filter-btn" data-filter="completed">
+                    Completed
+                </button>
+            </div>
+
+            <ul id="task-list" aria-live="polite"></ul>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Susritha | Thiranex Internship</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
